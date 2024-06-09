@@ -68,16 +68,14 @@ public class Cliente implements Identificar {
         }
 
         public ListaDuplamenteEncadeada<Produto> lojaEstoque = new ListaDuplamenteEncadeada<>();
-
-        //TODO: HISTORICO DE COMPRA: TROCAR LISTA POR ARVORE (VENDEDOR)
-        public ListaDuplamenteEncadeada<HistoricoDeCompra> historicoCompras = new ListaDuplamenteEncadeada<>();
+        public ArvoreDeCompra<Compra> historicoCompras = new ArvoreDeCompra<>();
 
         public void getLojaEstoque() {
             lojaEstoque.printarOrdem();
 
         }
         public void getHistoricoCompras() {
-            historicoCompras.printarOrdem();
+            historicoCompras.printarHistorico();
         }
 
 
@@ -110,7 +108,7 @@ public class Cliente implements Identificar {
         public PilhaDeProdutos carrinho = new PilhaDeProdutos();
 
         //TODO: HISTORICO DE COMPRA: TROCAR LISTA POR ARVORE (COMPRADOR)
-        public ListaDuplamenteEncadeada<HistoricoDeCompra> historicoCompras = new ListaDuplamenteEncadeada<>();
+        public ArvoreDeCompra<Compra> historicoCompras = new ArvoreDeCompra<>();
 
         public String getEndereco() {
             return endereco;

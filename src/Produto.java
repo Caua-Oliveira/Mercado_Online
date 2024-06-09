@@ -4,17 +4,19 @@ public class Produto implements Identificar {
     String descricao;
     String categoria;
     double preco;
-    int quantidade;
-    //TODO: Adicionar a FILA de avaliações
+    int estoque;
+    int totalAvaliacoes;
+    double mediaAvaliacoes;
 
-
-    public Produto(String nome, String descricao, String categoria, double preco, int quantidade) {
+    public Produto(String nome, String descricao, String categoria, double preco, int estoque) {
         this.nome = nome;
         this.descricao = descricao;
         this.categoria = categoria;
         this.preco = preco;
-        this.quantidade = quantidade;
+        this.estoque = estoque;
         this.id = nome;
+        this.mediaAvaliacoes = 0.0;
+        this.totalAvaliacoes = 0;
     }
 
     @Override
@@ -39,11 +41,11 @@ public class Produto implements Identificar {
         this.descricao = descricao;
     }
 
-    public int getQuantidade() {
-        return quantidade;
+    public int getEstoque() {
+        return estoque;
     }
-    public void setQuantidade(int quantidade) {
-        this.quantidade = quantidade;
+    public void setEstoque(int estoque) {
+        this.estoque = estoque;
     }
 
     public String getCategoria() {
@@ -59,6 +61,19 @@ public class Produto implements Identificar {
     public void setPreco(double preco) {
         this.preco = preco;
     }
+
+    public double getMediaAvaliacoes() {
+        return mediaAvaliacoes;
+    }
+    public int getTotalAvaliacoes() {
+        return totalAvaliacoes;
+    }
+    public void avaliar(Avaliacao avaliacao) {
+        double mediaAtualizada = ((mediaAvaliacoes * totalAvaliacoes) + avaliacao.getNota()) / (totalAvaliacoes + 1);
+        this.mediaAvaliacoes = mediaAtualizada;
+        this.totalAvaliacoes++;
+    }
+
     @Override
     public String toString() {
         return "Product{" +
@@ -66,7 +81,7 @@ public class Produto implements Identificar {
                 ", descricao='" + descricao + '\'' +
                 ", categoria='" + categoria + '\'' +
                 ", preco=" + preco +
-                ", quantidade=" + quantidade +
+                ", estoque=" + estoque +
                 '}';
     }
 
