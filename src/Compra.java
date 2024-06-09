@@ -1,11 +1,16 @@
-public class HistoricoDeCompra implements Identificar {
+import java.time.LocalDateTime;
+
+public class Compra implements Identificar {
     String id;
     Cliente.Vendedor vendedor;
     Cliente.Comprador comprador;
     ListaDuplamenteEncadeada<Produto> produtos;
+    LocalDateTime data;
+    int quantidade;
 
-    public HistoricoDeCompra(Cliente.Vendedor vendedor, Cliente.Comprador comprador, ListaDuplamenteEncadeada<Produto> produtos) {
-        this.id = vendedor.getID() + "-" + comprador.getID();
+    public Compra(Cliente.Vendedor vendedor, Cliente.Comprador comprador, ListaDuplamenteEncadeada<Produto> produtos, LocalDateTime data, int quantidade) {
+        this.data = data;
+        this.id = data.toString();
         this.vendedor = vendedor;
         this.comprador = comprador;
         this.produtos = produtos;
@@ -25,7 +30,7 @@ public class HistoricoDeCompra implements Identificar {
 
         ListaDuplamenteEncadeada.No<Produto> atual = produtos.primeiro;
         while (atual != null) {
-            sb.append(atual.dado.getNome()).append(", ").append(atual.dado.getQuantidade()).append("\n");
+            sb.append(atual.dado.getNome()).append(", ").append(atual.dado.getEstoque()).append("\n");
             atual = atual.proximo;
         }
 
