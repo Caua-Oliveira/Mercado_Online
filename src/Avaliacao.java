@@ -1,4 +1,4 @@
-public class Avaliacao {
+public class Avaliacao implements Identificar {
     private Cliente.Comprador comprador;
     private Produto produto;
     private String comentario;
@@ -35,5 +35,10 @@ public class Avaliacao {
                 ", comentario='" + comentario + '\'' +
                 ", nota=" + nota +
                 '}';
+    }
+
+    @Override
+    public String getID() {
+        return null;
     }
 }
