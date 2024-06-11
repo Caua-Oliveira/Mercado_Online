@@ -4,16 +4,14 @@ public class Produto implements Identificar {
     String descricao;
     String categoria;
     double preco;
-    int estoque;
     int totalAvaliacoes;
     double mediaAvaliacoes;
 
-    public Produto(String nome, String descricao, String categoria, double preco, int estoque) {
+    public Produto(String nome, String descricao, String categoria, double preco) {
         this.nome = nome;
         this.descricao = descricao;
         this.categoria = categoria;
         this.preco = preco;
-        this.estoque = estoque;
         this.id = nome;
         this.mediaAvaliacoes = 0.0;
         this.totalAvaliacoes = 0;
@@ -39,13 +37,6 @@ public class Produto implements Identificar {
     }
     public void setDescricao(String descricao) {
         this.descricao = descricao;
-    }
-
-    public int getEstoque() {
-        return estoque;
-    }
-    public void setEstoque(int estoque) {
-        this.estoque = estoque;
     }
 
     public String getCategoria() {
@@ -81,7 +72,6 @@ public class Produto implements Identificar {
                 ", descricao='" + descricao + '\'' +
                 ", categoria='" + categoria + '\'' +
                 ", preco=" + preco +
-                ", estoque=" + estoque +
                 '}';
     }
 

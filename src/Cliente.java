@@ -1,9 +1,10 @@
+import java.util.Scanner;
+
 public class Cliente implements Identificar {
     String id;
     String username;
     String email;
     String senha;
-    double saldo = 0;
 
     public Cliente(String username, String email, String senha) {
         this.username = username;
@@ -43,13 +44,6 @@ public class Cliente implements Identificar {
         this.senha = senha;
     }
 
-    public double getSaldo() {
-        return saldo;
-    }
-    public void setSaldo(float saldo) {
-        this.saldo = saldo;
-    }
-
     public boolean ehVendedor() {
         return this instanceof Vendedor;
     }
@@ -62,16 +56,40 @@ public class Cliente implements Identificar {
  ****/
     public static class Vendedor extends Cliente {
         private String nomeLoja;
+        private static ListaDuplamenteEncadeada<Vendedor> vendedores = new ListaDuplamenteEncadeada<>();
+        private PilhaDeProdutos lojaEstoque = new PilhaDeProdutos();        
+        public ArvoreDeCompra<Compra> historicoCompras = new ArvoreDeCompra<>();
+
         public Vendedor(String username, String email, String senha, String nomeLoja) {
             super(username, email, senha);
             this.nomeLoja = nomeLoja;
         }
 
-        public ListaDuplamenteEncadeada<Produto> lojaEstoque = new ListaDuplamenteEncadeada<>();
-        public ArvoreDeCompra<Compra> historicoCompras = new ArvoreDeCompra<>();
+        public static void listarLojas() {
+            ListaDuplamenteEncadeada.No<Vendedor> atual = vendedores.primeiro;
+            while (atual != null) {
+                System.out.println(atual.dado.getNomeLoja());
+                atual = atual.proximo;
+            }
+        }
+
+        public static Vendedor escolherLoja(String nomeLoja) {
+            ListaDuplamenteEncadeada.No<Vendedor> atual = vendedores.primeiro;
+            while (atual != null) {
+                if (atual.dado.getNomeLoja().equals(nomeLoja)) {
+                    return atual.dado;
+                }
+                atual = atual.proximo;
+            }
+            return null;
+        }
+
+        public void solicitarAvaliacao(Avaliacao avaliacao) {
+            avaliacoesPendentes.enfileirar(avaliacao);
+        }
 
         public void getLojaEstoque() {
-            lojaEstoque.printarOrdem();
+            lojaEstoque.printarProdutos();
 
         }
         public void getHistoricoCompras() {
@@ -99,16 +117,22 @@ public class Cliente implements Identificar {
     }
 
     public static class Comprador extends Cliente {
+        private Compra ultimaCompra;
         private String endereco;
-        public Comprador(String username, String email, String password, String adress) {
+        public Comprador(String username, String email, String password, String address) {
             super(username, email, password);
-            this.endereco = adress;
+            this.endereco = address;
         }
 
         public PilhaDeProdutos carrinho = new PilhaDeProdutos();
-
-        //TODO: HISTORICO DE COMPRA: TROCAR LISTA POR ARVORE (COMPRADOR)
         public ArvoreDeCompra<Compra> historicoCompras = new ArvoreDeCompra<>();
+
+        public void setUltimaCompra(Compra ultimaCompra) {
+            this.ultimaCompra = ultimaCompra;
+        }
+        public Compra getUltimaCompra() {
+            return ultimaCompra;
+        }
 
         public String getEndereco() {
             return endereco;
@@ -117,6 +141,28 @@ public class Cliente implements Identificar {
             this.endereco = endereco;
         }
 
+        public void solicitarAvaliacao() {
+        if (ultimaCompra != null) {
+            Scanner scanner = new Scanner(System.in);
+
+            System.out.println("Por favor, avalie o produto:");
+            System.out.print("Comentário: ");
+            String comentario = scanner.nextLine();
+
+            System.out.print("Nota (de 1 a 5): ");
+            int nota = scanner.nextInt();
+            scanner.nextLine();
+            scanner.close();
+
+            Avaliacao avaliacao = new Avaliacao(this, ultimaCompra.getProduto(), comentario, nota);
+            ultimaCompra.getVendedor().solicitarAvaliacao(avaliacao);
+
+            System.out.println("Avaliação realizada com sucesso!");
+        } else {
+            System.out.println("Você não fez nenhuma compra para avaliar.");
+        }
+        }
+        
         @Override
         public String toString() {
             return "Client{" +
