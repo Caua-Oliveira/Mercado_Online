@@ -23,10 +23,10 @@ public class Compra implements Identificar {
 
     public String printarFormatado() {
         StringBuilder sb = new StringBuilder();
-        sb.append("PurchaseRecord{\n")
-                .append("seller = ").append(vendedor.getNomeLoja()).append(",\n")
-                .append("consumer = ").append(comprador.getUsername()).append(",\n")
-                .append("products = \n");
+        sb.append("Compra:{\n")
+                .append("vendedor = ").append(vendedor.getNomeLoja()).append(",\n")
+                .append("comprador = ").append(comprador.getUsername()).append(",\n")
+                .append("produtos = \n");
 
         ListaDuplamenteEncadeada.No<Produto> atual = produtos.primeiro;
         while (atual != null) {
@@ -40,11 +40,11 @@ public class Compra implements Identificar {
 
     @Override
     public String toString() {
-        return "PurchaseRecord{" +
+        return "Compra{" +
                 "id='" + id + '\'' +
-                ", seller=" + vendedor +
-                ", consumer=" + comprador +
-                ", products=" + produtos +
+                ", vendedor=" + vendedor +
+                ", comprador=" + comprador +
+                ", produtos=" + produtos +
                 '}';
     }
 }
