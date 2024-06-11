@@ -68,19 +68,20 @@ public class Cliente implements Identificar {
         }
 
         public ListaDuplamenteEncadeada<Produto> lojaEstoque = new ListaDuplamenteEncadeada<>();
-        public ArvoreDeCompra<Compra> historicoVendas = new ArvoreDeCompra<>();
+        public ArvoreDeCompra<Compra> historicoCompras = new ArvoreDeCompra<>();
 
-        public ListaDuplamenteEncadeada<Produto> getLojaEstoque() {
-            return lojaEstoque;
+        public void getLojaEstoque() {
+            lojaEstoque.printarOrdem();
+
         }
-        public ArvoreDeCompra<Compra> getHistoricoVendas() {
-            return historicoVendas;
+        public void getHistoricoCompras() {
+            historicoCompras.printarHistorico();
         }
 
-        public String getNomeLoja() {
+
+    public String getNomeLoja() {
             return nomeLoja;
         }
-
         public void setNomeLoja(String nomeLoja) {
             this.nomeLoja = nomeLoja;
         }
@@ -116,9 +117,6 @@ public class Cliente implements Identificar {
             this.endereco = endereco;
         }
 
-        public ArvoreDeCompra<Compra> getHistoricoCompras() {
-            return historicoCompras;
-        }
         @Override
         public String toString() {
             return "Client{" +
