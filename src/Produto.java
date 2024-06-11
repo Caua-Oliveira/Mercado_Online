@@ -7,6 +7,7 @@ public class Produto implements Identificar {
     int estoque;
     int totalAvaliacoes;
     double mediaAvaliacoes;
+    Fila<Avaliacao> avaliacoes;
 
     public Produto(String nome, String descricao, String categoria, double preco, int estoque) {
         this.nome = nome;
@@ -17,6 +18,7 @@ public class Produto implements Identificar {
         this.id = nome;
         this.mediaAvaliacoes = 0.0;
         this.totalAvaliacoes = 0;
+        this.avaliacoes = new Fila<>();
     }
 
     @Override
@@ -76,7 +78,7 @@ public class Produto implements Identificar {
 
     @Override
     public String toString() {
-        return "Product{" +
+        return "Produto{" +
                 "nome='" + nome + '\'' +
                 ", descricao='" + descricao + '\'' +
                 ", categoria='" + categoria + '\'' +
