@@ -1,15 +1,15 @@
 public class PilhaDeProdutos {
-    private static class No {
+    static class No {
         Produto produto;
         No proximo;
 
-        private No(Produto produto) {
+        No(Produto produto) {
             this.produto = produto;
             this.proximo = null;
         }
     }
 
-    private No topo;
+    No topo;
 
     public PilhaDeProdutos() {
         this.topo = null;
