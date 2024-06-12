@@ -4,8 +4,6 @@ public class Produto implements Identificar {
     String descricao;
     String categoria;
     double preco;
-    int totalAvaliacoes;
-    double mediaAvaliacoes;
 
     public Produto(String nome, String descricao, String categoria, double preco) {
         this.nome = nome;
@@ -13,8 +11,6 @@ public class Produto implements Identificar {
         this.categoria = categoria;
         this.preco = preco;
         this.id = nome;
-        this.mediaAvaliacoes = 0.0;
-        this.totalAvaliacoes = 0;
     }
 
     @Override
@@ -53,17 +49,6 @@ public class Produto implements Identificar {
         this.preco = preco;
     }
 
-    public double getMediaAvaliacoes() {
-        return mediaAvaliacoes;
-    }
-    public int getTotalAvaliacoes() {
-        return totalAvaliacoes;
-    }
-    public void avaliar(Avaliacao avaliacao) {
-        double mediaAtualizada = ((mediaAvaliacoes * totalAvaliacoes) + avaliacao.getNota()) / (totalAvaliacoes + 1);
-        this.mediaAvaliacoes = mediaAtualizada;
-        this.totalAvaliacoes++;
-    }
 
     @Override
     public String toString() {

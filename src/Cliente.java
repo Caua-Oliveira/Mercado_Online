@@ -12,9 +12,7 @@ public class Cliente implements Identificar {
         this.senha = senha;
         this.id = username;
     }
-/****
- * Methods
-****/
+
     @Override
     public String getID() {
         return id;
@@ -56,13 +54,19 @@ public class Cliente implements Identificar {
  ****/
     public static class Vendedor extends Cliente {
         private String nomeLoja;
+        int totalAvaliacoes;
+        double mediaAvaliacoes;
+    
         private static ListaDuplamenteEncadeada<Vendedor> vendedores = new ListaDuplamenteEncadeada<>();
         private PilhaDeProdutos lojaEstoque = new PilhaDeProdutos();        
         public ArvoreDeCompra<Compra> historicoCompras = new ArvoreDeCompra<>();
+        private Fila<Avaliacao> avaliacoesPendentes = new Fila<>();
 
         public Vendedor(String username, String email, String senha, String nomeLoja) {
             super(username, email, senha);
             this.nomeLoja = nomeLoja;
+            this.mediaAvaliacoes = 0.0;
+            this.totalAvaliacoes = 0;    
         }
 
         public static void listarLojas() {
@@ -73,31 +77,52 @@ public class Cliente implements Identificar {
             }
         }
 
-        public static Vendedor escolherLoja(String nomeLoja) {
+        public static Vendedor escolherLoja() {
+            // Lista as lojas disponíveis
+            System.out.println("Lojas disponíveis:");
             ListaDuplamenteEncadeada.No<Vendedor> atual = vendedores.primeiro;
             while (atual != null) {
+                System.out.println(atual.dado.getNomeLoja());
+                atual = atual.proximo;
+            }
+        
+            // Solicita ao usuário que escolha uma loja
+            Scanner scanner = new Scanner(System.in);
+            System.out.print("Escolha o nome da loja que deseja acessar: ");
+            String nomeLoja = scanner.nextLine();
+        
+            // Encontra e retorna a loja escolhida
+            atual = vendedores.primeiro;
+            while (atual != null) {
                 if (atual.dado.getNomeLoja().equals(nomeLoja)) {
+                    scanner.close();
                     return atual.dado;
                 }
                 atual = atual.proximo;
             }
-            return null;
+        
+            // Se a loja não for encontrada, avisa o usuário e solicita uma nova escolha
+            System.out.println("Loja não encontrada. Por favor, escolha um nome válido.");
+            scanner.close();
+            return escolherLoja();
+        }
+        
+        public double getMediaAvaliacoes() {
+            return mediaAvaliacoes;
+        }
+        public int getTotalAvaliacoes() {
+            return totalAvaliacoes;
+        }
+    
+        public PilhaDeProdutos getLojaEstoque() {
+            return lojaEstoque;
+
+        }
+        public ArvoreDeCompra<Compra> getHistoricoCompras() {
+            return historicoCompras;
         }
 
-        public void solicitarAvaliacao(Avaliacao avaliacao) {
-            avaliacoesPendentes.enfileirar(avaliacao);
-        }
-
-        public void getLojaEstoque() {
-            lojaEstoque.printarProdutos();
-
-        }
-        public void getHistoricoCompras() {
-            historicoCompras.printarHistorico();
-        }
-
-
-    public String getNomeLoja() {
+        public String getNomeLoja() {
             return nomeLoja;
         }
         public void setNomeLoja(String nomeLoja) {
@@ -114,6 +139,24 @@ public class Cliente implements Identificar {
                     ", tipo='" + this.getClass().getSimpleName() + '\'' +
                     '}';
         }
+
+        public void avaliar(Avaliacao avaliacao) {
+            double mediaAtualizada = ((mediaAvaliacoes * totalAvaliacoes) + avaliacao.getNota()) / (totalAvaliacoes + 1);
+            this.mediaAvaliacoes = mediaAtualizada;
+            this.totalAvaliacoes++;
+        }
+
+        public void solicitarAvaliacao(Avaliacao avaliacao) {
+            this.avaliacoesPendentes.enfileirar(avaliacao);
+        }
+    
+        public void processarAvaliacoesPendentes() {
+            while (!this.avaliacoesPendentes.estaVazia()) {
+                Avaliacao avaliacao = this.avaliacoesPendentes.desenfileirar();
+                System.out.println("Avaliação processada: " + avaliacao);
+            }
+        }
+
     }
 
     public static class Comprador extends Cliente {
@@ -141,7 +184,7 @@ public class Cliente implements Identificar {
             this.endereco = endereco;
         }
 
-        public void solicitarAvaliacao() {
+        /*public void solicitarAvaliacao() {
         if (ultimaCompra != null) {
             Scanner scanner = new Scanner(System.in);
 
@@ -160,8 +203,8 @@ public class Cliente implements Identificar {
             System.out.println("Avaliação realizada com sucesso!");
         } else {
             System.out.println("Você não fez nenhuma compra para avaliar.");
-        }
-        }
+        } 
+        }*/
         
         @Override
         public String toString() {
