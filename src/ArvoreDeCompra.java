@@ -41,6 +41,7 @@ public class ArvoreDeCompra<T extends Identificar> {
         if (raiz != null) {
             printarHistoricoRecursivo(raiz.left);
             System.out.println(raiz.compra.printarFormatado());
+            System.out.println(raiz.compra.toString());
             printarHistoricoRecursivo(raiz.right);
         }
     }

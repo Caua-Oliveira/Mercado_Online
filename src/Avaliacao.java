@@ -1,12 +1,12 @@
 public class Avaliacao implements Identificar{
     private Cliente.Comprador comprador;
-    private Produto produto;
+    private Compra compra;
     private String comentario;
     private int nota;
 
-    public Avaliacao(Cliente.Comprador comprador, Produto produto, String comentario, int nota) {
+    public Avaliacao(Cliente.Comprador comprador, Compra compra, String comentario, int nota) {
         this.comprador = comprador;
-        this.produto = produto;
+        this.compra = compra;
         this.comentario = comentario;
         this.nota = nota;
     }
@@ -15,8 +15,8 @@ public class Avaliacao implements Identificar{
         return comprador;
     }
 
-    public Produto getProduto() {
-        return produto;
+    public Compra getCompra() {
+        return compra;
     }
 
     public String getComentario() {
@@ -31,7 +31,7 @@ public class Avaliacao implements Identificar{
     public String toString() {
         return "Avaliação{" +
                 "comprador=" + comprador +
-                ", produto=" + produto +
+                ", compra=" + compra +
                 ", comentario='" + comentario + '\'' +
                 ", nota=" + nota +
                 '}';

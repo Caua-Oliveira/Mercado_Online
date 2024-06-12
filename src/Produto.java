@@ -4,6 +4,10 @@ public class Produto implements Identificar {
     String descricao;
     String categoria;
     double preco;
+<<<<<<< Updated upstream
+=======
+    int estoque;
+>>>>>>> Stashed changes
 
     public Produto(String nome, String descricao, String categoria, double preco) {
         this.nome = nome;
@@ -49,7 +53,10 @@ public class Produto implements Identificar {
         this.preco = preco;
     }
 
+<<<<<<< Updated upstream
 
+=======
+>>>>>>> Stashed changes
     @Override
     public String toString() {
         return "Product{" +

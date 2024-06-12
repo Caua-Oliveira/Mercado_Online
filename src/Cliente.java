@@ -168,6 +168,10 @@ public class Cliente implements Identificar {
         }
 
         public PilhaDeProdutos carrinho = new PilhaDeProdutos();
+<<<<<<< Updated upstream
+=======
+
+>>>>>>> Stashed changes
         public ArvoreDeCompra<Compra> historicoCompras = new ArvoreDeCompra<>();
 
         public void setUltimaCompra(Compra ultimaCompra) {
