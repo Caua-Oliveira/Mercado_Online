@@ -7,101 +7,92 @@ public class Main {
 
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
-
+    
         System.out.println("Bem-vindo ao Mercado Online!");
+    
         int escolha;
         do {
-            System.out.println("1 - Cadastrar como Cliente");
-            System.out.println("2 - Cadastrar como Vendedor");
-            System.out.println("3 - Login como Cliente");
-            System.out.println("4 - Login como Vendedor");
+            System.out.println("1 - Entrar como Comprador");
+            System.out.println("2 - Entrar como Vendedor");
+            System.out.println("0 - Sair");
             System.out.print("Escolha uma opção: ");
             escolha = scanner.nextInt();
             scanner.nextLine(); // Consumir a quebra de linha após o número
-
-            if (escolha < 1 || escolha > 4) {
-                System.out.println("Opção inválida. Por favor, escolha entre as opções apresetadas.");
-            }
-        } while (escolha < 1 || escolha > 4);
-
-
-        if (escolha == 1) {
-            cadastrarComprador(cadastro(escolha)[0], cadastro(escolha)[1], cadastro(escolha)[2], cadastro(escolha)[3]);
-        } else if (escolha == 2) {
-            cadastrarVendedor(cadastro(escolha)[0], cadastro(escolha)[1], cadastro(escolha)[2], cadastro(escolha)[3]);
-        }else if (escolha == 3) {
-            Cliente.Comprador comprador = fazerLoginComprador(login()[0], login()[1]);
-            if (comprador != null) {
-                System.out.println("Login como Comprador realizado com sucesso!");
-                // Listar Lojas
-                Cliente.Vendedor.listarLojas();             
-                // Escolha de loja
-                System.out.print("Digite o nome da loja que deseja visitar: ");
-                String nomeLoja = scanner.nextLine();
-                Cliente.Vendedor lojaEscolhida = Cliente.Vendedor.escolherLoja(nomeLoja);
-
-                if (lojaEscolhida != null) {
-                    System.out.println("Você escolheu a loja: " + lojaEscolhida.getNomeLoja());
-                    // Escolher produto
-                    lojaEscolhida.getLojaEstoque();
+    
+            if (escolha == 1) {
+                String[] loginDados = login(scanner);
+                Cliente.Comprador comprador = fazerLoginComprador(loginDados[0], loginDados[1]);
+    
+                if (comprador != null) {
+                    System.out.println("Login como Comprador realizado com sucesso!");
+                    // Escolha de Loja
+                    Cliente.Vendedor loja = Cliente.Vendedor.escolherLoja();             
+                    // Escolha de Produto
+                    PilhaDeProdutos produtos = loja.getLojaEstoque();
+                    Produto produtoEscolhido = escolherProduto(produtos);
+                    // Processar compra e avaliar
+                    processarCompra(loja, comprador, produtoEscolhido);
                 } else {
-                    System.out.println("Loja não encontrada.");
+                    System.out.println("Usuário não encontrado. Deseja se cadastrar? (S/N)");
+                    String resposta = scanner.nextLine().trim().toUpperCase();
+                    if (resposta.equals("S")) {
+                        String[] dados = cadastro(escolha, scanner);
+                        cadastrarComprador(dados[0], dados[1], dados[2], dados[3]);
+                        System.out.println("Cadastro realizado com sucesso. Faça o login novamente.");
+                    }
                 }
-                scanner.close();
-
-                // Processar compra
-                // Logo após, avaliar a compra feita (this.ultimo)
-            } else {
-                System.out.println("Username ou senha incorretos para Comprador.");
+            } else if (escolha == 2) {
+                String[] loginDados = login(scanner);
+                Cliente.Vendedor vendedor = fazerLoginVendedor(loginDados[0], loginDados[1]);
+    
+                if (vendedor != null) {
+                    System.out.println("Login como Vendedor realizado com sucesso!");
+                    // Implemente as ações do vendedor aqui
+                } else {
+                    System.out.println("Usuário não encontrado. Deseja se cadastrar? (S/N)");
+                    String resposta = scanner.nextLine().trim().toUpperCase();
+                    if (resposta.equals("S")) {
+                        String[] dados = cadastro(escolha, scanner);
+                        cadastrarVendedor(dados[0], dados[1], dados[2], dados[3]);
+                        System.out.println("Cadastro realizado com sucesso. Faça o login novamente.");
+                    }
+                }
+            } else if (escolha != 0) {
+                System.out.println("Opção inválida. Por favor, escolha entre as opções apresentadas.");
             }
-        } else if (escolha == 4) {
-            Cliente.Vendedor vendedor = fazerLoginVendedor(login()[0], login()[1]);
-            if (vendedor != null) {
-                System.out.println("Login como Vendedor realizado com sucesso!");
-                // Cadastrar produto novo ou existente (aumentar estoque)
-                // Consultar faturamento (ou não, depende do tempo)
-            } else {
-                System.out.println("Username ou senha incorretos para Vendedor.");
-            }
-        }
-        scanner.close(); 
+    
+        } while (escolha != 0);
+    
+        scanner.close();    
     }
 
-    public static String[] cadastro(int i) {
-        Scanner scanner = new Scanner(System.in);
-    
+    public static String[] cadastro(int i, Scanner scanner) {
         System.out.print("Digite seu username: ");
         String username = scanner.nextLine();
         System.out.print("Digite seu e-mail: ");
         String email = scanner.nextLine();
         System.out.print("Digite sua senha: ");
         String senha = scanner.nextLine();
-        System.out.print("Digite seu Endereço: ");
-        String address = scanner.nextLine();
 
         if (i == 1) {
+            System.out.print("Digite seu Endereço: ");
+            String address = scanner.nextLine();
+            return new String[]{username, email, senha, address};
+        } else {
             System.out.print("Digite o nome da sua loja: ");
             String nomeLoja = scanner.nextLine();
-            scanner.close();
             return new String[]{username, email, senha, nomeLoja};
         }
+    }    
 
-        scanner.close(); 
-
-        return new String[]{username, email, senha, address};
-    }
-    
-    public static String[] login() {
-        Scanner scanner = new Scanner(System.in);
-    
+    public static String[] login(Scanner scanner) {
         System.out.print("Digite seu username: ");
-        String username = scanner.nextLine();   
+        String username = scanner.nextLine();
         System.out.print("Digite sua senha: ");
         String senha = scanner.nextLine();
-
-        scanner.close(); 
         return new String[]{username, senha};
     }
+    
 
     public static void cadastrarComprador(String username, String email, String senha, String address) {
         Cliente.Comprador comprador = new Cliente.Comprador(username, email, senha, address);
@@ -135,57 +126,76 @@ public class Main {
         return null; // usuario não encontrado
     }
 
-    public Produto escolherProduto(ListaDuplamenteEncadeada<Produto> produtos) {
+    public static Produto escolherProduto(PilhaDeProdutos produtos) {
         Scanner scanner = new Scanner(System.in);
     
         // Mostra a lista de produtos disponíveis
         System.out.println("Produtos disponíveis:");
-        produtos.printarOrdem();
+        produtos.printarProdutos();
     
         // Pede ao usuário para escolher um produto
-        System.out.print("Escolha o ID do produto que deseja comprar: ");
-        String idProdutoEscolhido = scanner.nextLine();
+        System.out.print("Escolha o nome do produto que deseja comprar: ");
+        String nomeProdutoEscolhido = scanner.nextLine();
     
         // Obtém o produto escolhido da lista de produtos
-        Produto produtoEscolhido = produtos.getDado(idProdutoEscolhido);
+        Produto produtoEscolhido = produtos.getProduto(nomeProdutoEscolhido);
     
         if (produtoEscolhido == null) {
-            System.out.println("Produto não encontrado. Por favor, escolha um ID válido.");
+            System.out.println("Produto não encontrado. Por favor, escolha um nome válido.");
             scanner.close();
             return escolherProduto(produtos); // Recursivamente pede ao usuário para escolher um produto válido
         }
         
         scanner.close();
         return produtoEscolhido;
+    } 
+
+    public static void processarCompra(Cliente.Vendedor vendedor, Cliente.Comprador comprador, Produto produto) {
+        Scanner scanner = new Scanner(System.in);
+        
+        // Pergunta a quantidade desejada
+        System.out.print("Digite a quantidade desejada: ");
+        int quantidade = scanner.nextInt();
+        scanner.close();
+    
+        // Cria a compra
+        Compra compra = new Compra(vendedor, comprador, produto, LocalDateTime.now(), quantidade);
+    
+        // Adiciona a compra ao histórico do vendedor
+        vendedor.historicoCompras.inserir(compra);
+        comprador.historicoCompras.inserir(compra);
+    
+        System.out.println("Compra realizada com sucesso!");
+    
+        // Solicita a avaliação
+        solicitarAvaliacao(compra);
+    }
+
+    public static void solicitarAvaliacao(Compra compra) {
+        Scanner scanner = new Scanner(System.in);
+    
+        // Pergunta ao comprador se deseja avaliar o produto
+        System.out.print("Você gostaria de avaliar o produto? (s/n): ");
+        String resposta = scanner.nextLine();
+    
+        if (resposta.equalsIgnoreCase("s")) {
+            System.out.print("Digite uma nota (0 a 5): ");
+            int nota = scanner.nextInt();
+            scanner.nextLine(); // Consumir a nova linha
+    
+            System.out.print("Digite um comentário: ");
+            String comentario = scanner.nextLine();
+            scanner.close();
+        
+            // Adiciona a avaliação à fila de avaliações pendentes do vendedor
+            compra.solicitarAvaliacao(comentario, nota);
+    
+            System.out.println("Obrigado pela sua avaliação!");
+        } else {
+            System.out.println("Obrigado pela sua compra!");
+        }
     }
     
-    public void processarCompra(Cliente.Comprador comprador, Cliente.Vendedor vendedor, Produto produtoEscolhido) {
-    Scanner scanner = new Scanner(System.in);
-
-    System.out.print("Digite a quantidade que deseja comprar: ");
-    int quantidade = scanner.nextInt();
-    scanner.nextLine(); // Consumir a quebra de linha após o número
-
-    if (quantidade <= 0) {
-        System.out.println("Quantidade inválida. Por favor, digite um valor maior que zero.");
-        scanner.close();
-        return;
-    }
-
-    scanner.close();
-    // Cria a compra
-    Compra compra = new Compra(vendedor, comprador, produtoEscolhido, LocalDateTime.now(), quantidade);
-
-    // Adiciona a compra ao histórico do comprador
-    comprador.historicoCompras.inserir(compra);
-    // Adiciona a compra ao histórico do vendedor
-    vendedor.historicoCompras.inserir(compra);
-
-    // Exibe os detalhes da compra
-    System.out.println("Compra realizada com sucesso!");
-    System.out.println(compra.printarFormatado());
-}
-
 }
 
 

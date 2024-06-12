@@ -44,4 +44,15 @@ public class PilhaDeProdutos {
         }
     }
 
+    public Produto getProduto(String nomeProduto) {
+        No atual = topo;
+        while (atual != null) {
+            if (atual.produto.getNome().equals(nomeProduto)) {
+                return atual.produto;
+            }
+            atual = atual.proximo;
+        }
+        return null;
+    }
+
 }
