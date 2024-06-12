@@ -4,16 +4,14 @@ public class Produto implements Identificar {
     String descricao;
     String categoria;
     double preco;
-<<<<<<< Updated upstream
-=======
     int estoque;
->>>>>>> Stashed changes
 
-    public Produto(String nome, String descricao, String categoria, double preco) {
+    public Produto(String nome, String descricao, String categoria, double preco, int estoque) {
         this.nome = nome;
         this.descricao = descricao;
         this.categoria = categoria;
         this.preco = preco;
+        this.estoque = estoque;
         this.id = nome;
     }
 
@@ -39,6 +37,13 @@ public class Produto implements Identificar {
         this.descricao = descricao;
     }
 
+    public int getEstoque() {
+        return estoque;
+    }
+    public void setEstoque(int estoque) {
+        this.estoque = estoque;
+    }
+
     public String getCategoria() {
         return categoria;
     }
@@ -53,17 +58,14 @@ public class Produto implements Identificar {
         this.preco = preco;
     }
 
-<<<<<<< Updated upstream
-
-=======
->>>>>>> Stashed changes
     @Override
     public String toString() {
-        return "Product{" +
+        return "Produto{" +
                 "nome='" + nome + '\'' +
                 ", descricao='" + descricao + '\'' +
                 ", categoria='" + categoria + '\'' +
                 ", preco=" + preco +
+                ", estoque=" + estoque +
                 '}';
     }
 

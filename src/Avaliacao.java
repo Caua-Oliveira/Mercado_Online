@@ -1,4 +1,4 @@
-public class Avaliacao implements Identificar{
+public class Avaliacao implements Identificar {
     private Cliente.Comprador comprador;
     private Compra compra;
     private String comentario;
@@ -39,7 +39,6 @@ public class Avaliacao implements Identificar{
 
     @Override
     public String getID() {
-        // Implemente o método getID conforme necessário
         return null;
     }
 }
